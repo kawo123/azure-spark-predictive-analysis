@@ -1,0 +1,10 @@
+# VS Code
+.vscode/
+
+# Terrform
+terraform/.terraform/
+terraform/*.tfplan
+terraform/*.tfstate*
+
+# Uncompressed data
+data/*.csv
