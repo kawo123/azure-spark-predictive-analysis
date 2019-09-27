@@ -4,20 +4,39 @@ Predictive analysis (classification, regression, text analysis, and recommendati
 
 ## Getting Started
 
-- Provision HDInsight and note SSH username and HDI cluster name
+- Clone the repository
+
+- In `./terraform`:
+  - Change `prefix` in `variables.tf` because Azure HDInsight name has to be globally unique
+    - For the remainder of the documentation, the prefix `azure-spark-pred` **WILL BE ASSUMED**
+  - Run `terraform plan -out=out.tfplan`
+  - Run `terraform apply out.tfplan`
+  - Note the outputs of `terraform apply`
+
+- In `./data`:
+  - Unzip `data.zip`
+    - This should result in 7 CSV files directly under `./data`
+
 - In terminal,
-  - `ssh [sshuser]@[cluster]-ssh.azurehdinsight.net`
+  - Run `ssh [sshuser]@[cluster]-ssh.azurehdinsight.net`
+    - If you did not change Terraform variables when provisioning, the command would be `ssh hdiadmin@azure-spark-pred-hdi-ssh.azurehdinsight.net`
   - `sudo -HE /usr/bin/anaconda/bin/conda install pandas`
-- create new folder `data` in root directory of storage account
-- upload all data to folder `data`
-- upload all notebooks to folder`HdiNotebooks/spark-pred-analysis` in storage account
+
+- In Azure Portal,
+  - Navigate to resource group `azure-spark-pred-rg` -> select storage account `azuresparkpredstorage` -> select `Storage Explorer (preview)`
+  - Expand `BLOB CONTAINERS` -> select `azure-spark-pred-container`
+  - Create new folder `data`
+  - Upload all data from `./data` to Azure blob folder `data`
+  - Select `azure-spark-pred-container` again to return to root directory
+  - Upload all notebooks from `./notebooks/*` to folder `HdiNotebooks/SparkPredictiveAnalysis`
+  - Navigate to resource group `azure-spark-pred-rg` -> select HDInsight `azure-spark-pred-hdi` -> select `Jupyter notebook` under "Cluster Dashboards"
+
 - In Jupyter,
-  - Create new folder `spark-pred-analysis` -> should see all ipynb uploaded to storage account
-  - Use kernel PySpark (Python 2)
-
-## Next Step
-
-- [] Terraform
+  - Create new folder `SparkPredictiveAnalysis`
+    - This should allow you to see all ipynb uploaded to Azure Storage
+    - **NOTE: I will report this behavior as bug for Azure HDInsight**
+  - Run all notebooks from `01` to `11` to learn predictive analysis using Spark
+    - Use kernel PySpark (Python 2) for running the notebooks
 
 ### PLEASE NOTE FOR THE ENTIRETY OF THIS REPOSITORY AND ALL ASSETS
 
